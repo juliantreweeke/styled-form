@@ -1,4 +1,3 @@
-// globalStyles.js
 import { createGlobalStyle } from "styled-components";
 import BackgroundImage from "./images/bg-intro-desktop.png";
 

@@ -1,12 +1,14 @@
-import logo from "./logo.svg";
 import styled from "styled-components";
 import "./App.css";
+
 import Container from "./components/Container/Container";
 import RoundedBox from "./components/RoundedBox/RoundedBox";
 import Button from "./components/Button/Button";
 import Input from "./components/Input/Input";
 import Theme from "./Theme";
 import GlobalStyles from "./GlobalStyles";
+
+import useForm from "./hooks/useForm";
 
 // TODO move into layout folder so these can be shared
 const Row = styled.div`
@@ -85,6 +87,34 @@ const HelpTextContainer = styled.div`
 `;
 
 function App() {
+  const onSubmit = () => {
+    console.log("submitted");
+  };
+
+  const inputs = {
+    firstName: {
+      value: "",
+      label: "First Name",
+    },
+    lastName: {
+      value: "",
+      label: "Last Name",
+    },
+    email: {
+      value: "",
+      label: "Email",
+    },
+    password: {
+      value: "",
+      label: "Password",
+    },
+  };
+
+  const { errors, handleChange, handleSubmit } = useForm({
+    onSubmit: onSubmit,
+    defaultInputValues: { ...inputs },
+  });
+
   return (
     <Theme>
       <GlobalStyles />
@@ -112,11 +142,39 @@ function App() {
                 thereafter
               </Button>
               <RoundedBox>
-                <Form>
-                  <Input type="text" placeholder="First Name" />
-                  <Input type="text" placeholder="Last Name" />
-                  <Input type="email" placeholder="Email Address" />
-                  <Input type="password" placeholder="Password" />
+                <Form onSubmit={handleSubmit}>
+                  <Input
+                    variant={errors.firstName ? "danger" : undefined}
+                    name="firstName"
+                    onChange={handleChange}
+                    type="text"
+                    placeholder={inputs.firstName.label}
+                    helpText={errors.firstName}
+                  />
+                  <Input
+                    variant={errors.lastName ? "danger" : undefined}
+                    name="lastName"
+                    onChange={handleChange}
+                    type="text"
+                    placeholder={inputs.lastName.label}
+                    helpText={errors.lastName}
+                  />
+                  <Input
+                    variant={errors.email ? "danger" : undefined}
+                    name="email"
+                    onChange={handleChange}
+                    type="text"
+                    placeholder={inputs.email.label}
+                    helpText={errors.email}
+                  />
+                  <Input
+                    variant={errors.password ? "danger" : undefined}
+                    name="password"
+                    type="password"
+                    onChange={handleChange}
+                    placeholder={inputs.password.label}
+                    helpText={errors.password}
+                  />
                   <Button type="submit" variant="secondary">
                     <Bold>CLAIM YOUR FREE TRIAL</Bold>
                   </Button>
